@@ -8,7 +8,7 @@ app.use(bodyParser.json());
 
 app.post("/api/data", (req, res) => {
   console.log(req.body);
-  res.status(200).send("Data received");
+  res.status(200).send("Data received", req.body);
 });
 
 app.listen(port, () => {
