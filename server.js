@@ -2,12 +2,14 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const mysql = require("mysql2");
+const cors = require("cors"); // Importar el módulo cors
 
 const app = express();
 const port = 3000;
 
 // Configurar middleware
 app.use(bodyParser.json());
+app.use(cors()); // Habilitar CORS para todos los orígenes
 
 // Configurar conexión a la base de datos
 const db = mysql.createConnection({
