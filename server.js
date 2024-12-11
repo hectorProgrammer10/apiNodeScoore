@@ -28,10 +28,29 @@ db.connect((err) => {
   }
 });
 
-// Ruta POST existente
+// Ruta POST para guardar los datos en la tabla 'wins'
 app.post("/api/data", (req, res) => {
-  console.log(req.body);
-  res.status(200).send("Data received");
+  const { valor } = req.body; // Obtener el valor del cuerpo de la solicitud
+
+  if (valor === undefined || isNaN(valor)) {
+    return res
+      .status(400)
+      .json({ error: "Se requiere un valor numérico válido" });
+  }
+
+  const query = "INSERT INTO wins (win_count) VALUES (?)"; // Consulta para insertar el valor en la tabla
+
+  db.query(query, [valor], (err, results) => {
+    if (err) {
+      console.error("Error al ejecutar la consulta:", err);
+      return res.status(500).json({ error: "Error al guardar los datos" });
+    }
+
+    // Responder con un mensaje de éxito
+    res
+      .status(201)
+      .json({ message: "Datos guardados correctamente", id: results.insertId });
+  });
 });
 
 // Nueva ruta GET para obtener winCount
